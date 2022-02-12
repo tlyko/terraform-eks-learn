@@ -28,6 +28,9 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
+    # clean infrastructure
+    - name: Terraform Destroy
+
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan
