@@ -30,6 +30,7 @@ jobs:
 
     # clean infrastructure
     - name: Terraform Destroy
+      run: terraform destroy
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
