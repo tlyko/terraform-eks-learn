@@ -36,10 +36,22 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}         
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: |
+        terraform apply -auto-approve
+        echo "region=terraform output -raw region" >> $GITHUB_ENV
+        echo "cluster_name=terraform output -raw cluster_name" >> $GITHUB_ENV
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}        
-  
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Create Kube-config file
+      run: |
+        aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}" --profile default && aws configure set --profile default && aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile default && aws configure set region "${{ env.region }}" --profile default && aws configure set output "json" --profile default
+        aws eks --region "${{ env.region }}" update-kubeconfig --name "${{ env.cluster_name }}"
+
+    - name: Install Metrics Server
+      run: |
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
+      
 
       
