@@ -28,12 +28,12 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
-    # clean infrastructure
-    - name: Terraform Destroy
-      run: terraform destroy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}         
+    # # clean infrastructure
+    # - name: Terraform Destroy
+    #   run: terraform destroy
+    #   env:
+    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}         
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
