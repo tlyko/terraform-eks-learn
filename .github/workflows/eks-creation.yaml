@@ -45,11 +45,14 @@ jobs:
     - name: Terraform Apply
       run: |
         terraform apply -auto-approve
-        echo "region=$(terraform output -raw region)" >> $GITHUB_ENV
-        echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_ENV
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Assign Variables
+      run: |
+        echo "region=$(terraform output -raw region)" >> $GITHUB_ENV
+        echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_ENV
 
     - name: Create Kube-config file
       run: |
